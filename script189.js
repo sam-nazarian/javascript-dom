@@ -39,70 +39,60 @@ document.addEventListener('keydown', function (e) {
 
 
 ////////////////////
-// console.log(btnCloseModal);
-// console.log(btnsOpenModal);
-
-// console.log(document.documentElement);
-// console.log(document.head);
-// console.log(document.body);
-
-
-
-//querySelector & document have same methods as each other
-// document.querySelector('.btn--close-modal').
-// console.log(document.getElementById('section--1'))
-
-// console.log( document.getElementsByTagName('button') );
-
-// const x = document.getElementsByTagName('button')
-// const x = document.getElementsByClassName('btn'); //these keep updating when a change is made to the dom but querySelector & querySelectorAll don't change
-
-
-//<div class="cookie-message"></div>
 const message = document.createElement('div'); //creates a dom elm, stored in var
 
 const header = document.querySelector('.header')
 message.classList.add('cookie-message');
-// message.textContent = 'We used cookies for improved functionality and analytics.';
 message.innerHTML = 'We used cookies for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>';
-
-
-//an elm cannot be at multiple places at the same time, (DOM ELM is unique)
-// header.prepend(message);
-// header.append(message.cloneNode(true)); //will be child of header but at end
-// header.before(message); //will be before header dom
-// header.after(message);
-
-// console.log(message);
 header.insertAdjacentElement('beforeend', message);
-
-// Creating and inserting elements
 
 
 document.querySelector('.btn--close-cookie').addEventListener('click', ()=>{
-  // message.remove();
-
-  //move up to header,
-  message.parentElement.removeChild(message);//removeChild(the name of the child dom to remove)
+  message.remove();
 })
 
-//message is already a style so this works
+//only adds/works on inline styles
 message.style.backgroundColor = '#37383d';
 message.style.width = '120%'
-
-
-console.log(getComputedStyle(message));
-
-//only adds/works on inline styles
-console.log(getComputedStyle(message).color);
-console.log(getComputedStyle(message).height);
-
 message.style.height = Number.parseFloat(getComputedStyle(message).height, 10) + 40 + 'px';
 
-document.documentElement.style.setProperty('--color-primary', 'orangered')
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
 
-//same as document.querySelector('html')
-// console.log(document.documentElement)
+btnScrollTo.addEventListener('click', (e) => {
+  const s1coords = section1.getBoundingClientRect(); //the amount of size needed to get to this window, based on curr position
 
+  // window.scrollTo({
+  //   left: s1coords.left + window.pageXOffset,
+  //   top: s1coords.top + window.pageYOffset, // 200px left to get to elm + already scrolled 300 px
+  //   behavior: 'smooth',
+  // })
+  section1.scrollIntoView({behavior: 'smooth'})
+})
+
+
+// const h1 = document.querySelector('h1');
+// const alertH1 = function(e){
+//   alert('addEventListener: Great! You are reading the heading :D');
 //
-// document.documentElement.style.setProperty('--color-primary')
+//   // h1.removeEventListener('mouseenter', alertH1) //removed the event listener
+// };
+// h1.addEventListener('mouseenter', alertH1)
+
+// setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000)
+
+
+// h1.onmouseenter = function(e){
+//   alert('addEventListener: Great! You are reading the heading :D');
+// }
+
+// h1.addEventListener('mouseenter', function(e){
+//   alert('addEventListener: Great! You are reading the heading :D');
+// })
+
+
+
+
+// h1.onmouseenter = function(e){
+//   alert('addEventListener: Great! You are reading the heading :D');
+// }
