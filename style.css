@@ -105,6 +105,7 @@ button:focus {
   outline: none;
 }
 
+/* This adds the animation to the img */
 img {
   transition: filter 0.5s;
 }
