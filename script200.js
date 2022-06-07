@@ -212,6 +212,7 @@ const loadImg = function(entries, observer){
   })
 }
 
+
 const imgTargets = document.querySelectorAll('img[data-src]') //select all images which have the property of "data-src"
 const imgObserver = new IntersectionObserver(loadImg, {root:null, threshold: 0})//rootMargin: '10px'
 
@@ -241,11 +242,15 @@ const goToSlide = function(currSlide){
   })
 }
 
+let currSlide = 0;
+const maxSlide = slides.length-1;
+
 const nextSlide = function(){
     if(currSlide === maxSlide) currSlide = 0;
     else currSlide++;
 
     goToSlide(currSlide)
+    activateDot(currSlide)
 }
 
 const prevSlide = function(){
@@ -253,20 +258,48 @@ const prevSlide = function(){
   else currSlide--
 
   goToSlide(currSlide)
+  activateDot(currSlide)
 }
-
-
 goToSlide(0)
 
-let currSlide = 0;
-const maxSlide = slides.length-1;
-
-
-//Next slide
-btnRight.addEventListener('click', nextSlide);
-// -100%, 0%, 100%, 200%
-
+//Going to slides using buttons
+btnRight.addEventListener('click', nextSlide); //-100%, 0%, 100%, 200%
 btnLeft.addEventListener('click', prevSlide);
 
+const dotContainer = document.querySelector('.dots');
 
-// Next slide
+const createDots = function(){
+  for(let i=0; i<slides.length; i++){
+    dotContainer.insertAdjacentHTML('beforeend', `<button class="dots__dot" data-slide="${i}"></button>`)
+  }
+}
+createDots();
+
+const activateDot = function(slide){
+  document.querySelectorAll('.dots__dot').forEach((dot)=> {
+    dot.classList.remove('dots__dot--active');
+  })
+
+    //same as img[data-src]
+    document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add('dots__dot--active');
+}
+
+activateDot(0);
+
+dotContainer.addEventListener('click', function(e){
+  if(e.target.classList.contains('dots__dot')){
+    // console.log(e.target);
+    const { slide } = e.target.dataset; //same as e.target.dataset.slide
+
+    goToSlide(slide)
+    activateDot(slide)
+
+  }
+})
+
+// Next slide, using keys
+document.addEventListener('keydown', function(e){
+  // console.log(e);
+  if(e.key === 'ArrowLeft') prevSlide();
+  if(e.key === 'ArrowRight') nextSlide();
+})
